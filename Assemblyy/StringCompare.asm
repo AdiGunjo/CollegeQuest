@@ -1,0 +1,35 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+    STR1    DB "HELLO$"
+    STR2    DB "HELLO$"
+    LEN     EQU 05H
+    EQ_MSG  DB 10,13,"Strings are EQUAL$"
+    NEQ_MSG DB 10,13,"Strings are NOT EQUAL$"
+.CODE
+MAIN PROC
+    MOV AX, @DATA
+    MOV DS, AX
+    LEA SI, STR1
+    LEA DI, STR2
+    MOV CX, LEN
+COMPARE_LOOP:
+    MOV AL, [SI]
+    CMP AL, [DI]
+    JNE NOT_EQUAL
+    INC SI
+    INC DI
+    LOOP COMPARE_LOOP
+    LEA DX, EQ_MSG
+    MOV AH, 09H
+    INT 21H
+    JMP EXIT
+NOT_EQUAL:
+    LEA DX, NEQ_MSG
+    MOV AH, 09H
+    INT 21H
+EXIT:
+    MOV AH, 4CH
+    INT 21H
+MAIN ENDP
+END MAIN

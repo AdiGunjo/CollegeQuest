@@ -1,0 +1,28 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+    ARRAY   DB 10H, 20H, 30H, 40H, 50H
+    COUNT   EQU 05H
+    SUM     DW 0000H
+    MSG     DB 10,13,"Sum of array: $"
+.CODE
+MAIN PROC
+    MOV AX, @DATA
+    MOV DS, AX
+    LEA SI, ARRAY
+    MOV CX, COUNT
+    MOV BX, 0
+SUM_LOOP:
+    MOV AL, [SI]
+    MOV AH, 0
+    ADD BX, AX
+    INC SI
+    LOOP SUM_LOOP
+    MOV SUM, BX
+    LEA DX, MSG
+    MOV AH, 09H
+    INT 21H
+    MOV AH, 4CH
+    INT 21H
+MAIN ENDP
+END MAIN

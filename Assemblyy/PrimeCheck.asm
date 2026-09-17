@@ -1,0 +1,40 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+    NUM     DB 11H
+    PRIME_MSG DB 10,13,"Number IS prime$"
+    NOTPRIME_MSG DB 10,13,"Number is NOT prime$"
+.CODE
+MAIN PROC
+    MOV AX, @DATA
+    MOV DS, AX
+    MOV AL, NUM
+    CMP AL, 2
+    JB NOT_PRIME
+    JE IS_PRIME
+    MOV BL, 2
+CHECK_LOOP:
+    MOV DL, AL
+    CMP BL, DL
+    JAE IS_PRIME
+    MOV AH, 0
+    DIV BL
+    CMP AH, 0
+    JE NOT_PRIME
+    INC BL
+    MOV AL, DL
+    JMP CHECK_LOOP
+IS_PRIME:
+    LEA DX, PRIME_MSG
+    MOV AH, 09H
+    INT 21H
+    JMP EXIT
+NOT_PRIME:
+    LEA DX, NOTPRIME_MSG
+    MOV AH, 09H
+    INT 21H
+EXIT:
+    MOV AH, 4CH
+    INT 21H
+MAIN ENDP
+END MAIN

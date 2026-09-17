@@ -1,0 +1,43 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+    STR1    DB "HELLO", '$'
+    STR2    DB "WORLD", '$'
+    RESULT  DB 50 DUP('$')
+    MSG     DB 10,13,"Concatenated string: $"
+.CODE
+MAIN PROC
+    MOV AX, @DATA
+    MOV DS, AX
+    LEA SI, STR1
+    LEA DI, RESULT
+COPY1:
+    MOV AL, [SI]
+    CMP AL, '$'
+    JE COPY2_START
+    MOV [DI], AL
+    INC SI
+    INC DI
+    JMP COPY1
+COPY2_START:
+    LEA SI, STR2
+COPY2:
+    MOV AL, [SI]
+    CMP AL, '$'
+    JE DONE_CONCAT
+    MOV [DI], AL
+    INC SI
+    INC DI
+    JMP COPY2
+DONE_CONCAT:
+    MOV BYTE PTR [DI], '$'
+    LEA DX, MSG
+    MOV AH, 09H
+    INT 21H
+    LEA DX, RESULT
+    MOV AH, 09H
+    INT 21H
+    MOV AH, 4CH
+    INT 21H
+MAIN ENDP
+END MAIN
