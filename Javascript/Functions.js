@@ -16,4 +16,9 @@ function greetUser(name = "Guest") {
   console.log(`Welcome, ${name}`);
 }
 greetUser();          
-greetUser("Aditya");   
+greetUser("Aditya");  
+
+function sumAll(...numbers) {
+  return numbers.reduce((total, n) => total + n, 0);
+}
+console.log(sumAll(1, 2, 3, 4)); // 10
